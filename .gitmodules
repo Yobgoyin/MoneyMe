@@ -1,0 +1,6 @@
+[submodule "loan_cli"]
+	path = loan_cli
+	url = https://github.com/Yobgoyin/loan_cli.git
+[submodule "applicant_api"]
+	path = applicant_api
+	url = https://github.com/Yobgoyin/applicant_api.git
