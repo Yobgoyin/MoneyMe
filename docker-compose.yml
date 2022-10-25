@@ -1,0 +1,44 @@
+version: '3.4'
+networks:
+    applicantapi:
+    loancli:
+
+services:
+
+  db:
+    container_name: applicant_db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+        - SA_PASSWORD=P@ssword123
+        - ACCEPT_EULA=Y
+    ports:
+        - 8082:1433
+    networks:
+        - applicantapi
+
+  applicant_api:
+    container_name: applicant_api
+    image: ${DOCKER_REGISTRY-}applicantapi
+    build:
+      context: ./applicant_api/ 
+      dockerfile: Dockerfile
+    ports:
+        - 8081:80
+    depends_on:
+        - db
+    networks:
+        - applicantapi
+
+  loan_cli:
+    container_name: loan_cli
+    image: viteapp:0.0.2
+    build:
+        context: ./loan_cli/
+        dockerfile: Dockerfile
+
+    ports:
+        - 8080:8080
+    depends_on:
+        - applicant_api
+    networks:
+        - loancli
